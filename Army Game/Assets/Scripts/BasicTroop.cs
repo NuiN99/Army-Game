@@ -6,11 +6,9 @@ using UnityEngine;
 
 public class BasicTroop : MonoBehaviour
 {
-    Transform currentTarget;
     Rigidbody2D rb;
     public BasicStats troopStats;
-
-
+    TargetFinder targetFinder;
 
     bool isAttacking = false;
     enum CurrentState
@@ -25,7 +23,7 @@ public class BasicTroop : MonoBehaviour
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
-        StartCoroutine(FindNearestTarget());
+        TryGetComponent(out targetFinder);
     }
 
     private void FixedUpdate()
@@ -37,7 +35,7 @@ public class BasicTroop : MonoBehaviour
 
     void GoToTarget()
     {
-        Vector2 targetDir = (currentTarget.transform.position - transform.position).normalized;
+        Vector2 targetDir = (targetFinder.currentTarget.transform.position - transform.position).normalized;
         rb.MovePosition((Vector2)transform.position + targetDir * troopStats.MoveSpeed);
     }
 
@@ -60,9 +58,9 @@ public class BasicTroop : MonoBehaviour
 
     void UpdateState()
     {
-        if (currentTarget != null)
+        if (targetFinder.currentTarget != null)
         {
-            float distFromTarget = Vector2.Distance(currentTarget.transform.position, gameObject.transform.position);
+            float distFromTarget = Vector2.Distance(targetFinder.currentTarget.transform.position, gameObject.transform.position);
             if (distFromTarget < troopStats.AtkRange && !isAttacking)
             {
                 currentState = CurrentState.ATTACKING;
@@ -84,29 +82,11 @@ public class BasicTroop : MonoBehaviour
     }
 
     //circle cast every searchInterval, get closest enemy in cast, then change state
-    IEnumerator FindNearestTarget()
-    {
-        while (true)
-        {
-            RaycastHit2D[] targetFinder = Physics2D.CircleCastAll(transform.position, troopStats.SearchRange, Vector3.zero, 0, troopStats.searchMask);
-            float closestTargetDist = 999;
-            foreach (RaycastHit2D target in targetFinder)
-            {
-                float dist = Vector2.Distance(target.collider.gameObject.transform.position, transform.position);
-                if (dist < closestTargetDist)
-                {
-                    currentTarget = target.collider.gameObject.transform;
-                    closestTargetDist = dist;
-                }
-            }
-            yield return new WaitForSeconds(troopStats.SearchInterval);
-        }
-    }
 
     IEnumerator AttackTarget()
     {
         isAttacking = true;
-        if (currentTarget.TryGetComponent<Health>(out var health))
+        if (targetFinder.currentTarget.TryGetComponent<Health>(out var health))
         {
             health.TakeDamage(troopStats.AtkDamage);
             print("HIT");   

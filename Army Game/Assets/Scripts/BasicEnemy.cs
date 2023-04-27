@@ -6,11 +6,9 @@ using UnityEngine;
 
 public class BasicEnemy : MonoBehaviour
 {
-    Transform currentTarget;
     Rigidbody2D rb;
     public BasicStats enemyStats;
-
-
+    TargetFinder targetFinder;
 
     bool isAttacking = false;
     enum CurrentState
@@ -25,7 +23,7 @@ public class BasicEnemy : MonoBehaviour
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
-        StartCoroutine(FindNearestTarget());
+        TryGetComponent(out targetFinder);
     }
 
     private void FixedUpdate()
@@ -37,38 +35,38 @@ public class BasicEnemy : MonoBehaviour
 
     void GoToTarget()
     {
-        Vector2 targetDir = (currentTarget.transform.position - transform.position).normalized;
+        Vector2 targetDir = (targetFinder.currentTarget.transform.position - transform.position).normalized;
         rb.MovePosition((Vector2)transform.position + targetDir * enemyStats.MoveSpeed);
     }
 
     void ActOnState()
     {
-        switch(currentState)
+        switch (currentState)
         {
             case CurrentState.GOING:
                 GoToTarget();
                 break;
 
             case CurrentState.SEARCHING:
-                
+
                 break;
             case CurrentState.WAITING:
-                
+
                 break;
         }
     }
 
     void UpdateState()
     {
-        if (currentTarget != null)
+        if (targetFinder.currentTarget != null)
         {
-            float distFromTarget = Vector2.Distance(currentTarget.transform.position, gameObject.transform.position);
+            float distFromTarget = Vector2.Distance(targetFinder.currentTarget.transform.position, gameObject.transform.position);
             if (distFromTarget < enemyStats.AtkRange && !isAttacking)
             {
                 currentState = CurrentState.ATTACKING;
                 StartCoroutine(AttackTarget());
             }
-            else if(distFromTarget > enemyStats.AtkRange)
+            else if (distFromTarget > enemyStats.AtkRange)
             {
                 currentState = CurrentState.GOING;
             }
@@ -83,33 +81,14 @@ public class BasicEnemy : MonoBehaviour
         }
     }
 
-    //circle cast every searchInterval, get closest player in cast, then change state
-    IEnumerator FindNearestTarget()
-    {
-        while (true)
-        {
-            RaycastHit2D[] targetFinder = Physics2D.CircleCastAll(transform.position, enemyStats.SearchRange, Vector3.zero, 0, enemyStats.searchMask);
-            float closestTargetDist = 999;
-            foreach(RaycastHit2D target in targetFinder)
-            {
-                float dist = Vector2.Distance(target.collider.gameObject.transform.position, transform.position);
-                if(dist < closestTargetDist)
-                {
-                    currentTarget = target.collider.gameObject.transform;
-                    closestTargetDist = dist;
-                } 
-            }
-            yield return new WaitForSeconds(enemyStats.SearchInterval);
-        }
-    }
+    //circle cast every searchInterval, get closest enemy in cast, then change state
 
     IEnumerator AttackTarget()
     {
         isAttacking = true;
-        if (currentTarget.TryGetComponent<Health>(out var health))
+        if (targetFinder.currentTarget.TryGetComponent<Health>(out var health))
         {
             health.TakeDamage(enemyStats.AtkDamage);
-            //print("HIT");
         }
         yield return new WaitForSeconds(enemyStats.AtkSpeed);
         isAttacking = false;

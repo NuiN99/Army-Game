@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8357079354601086310}
   - component: {fileID: -1509080519853797309}
+  - component: {fileID: -4672483665732326311}
   - component: {fileID: 413372948441439669}
   - component: {fileID: 8357079354601086307}
   - component: {fileID: 8357079354601086309}
@@ -50,6 +51,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   troopStats: {fileID: 11400000, guid: 27e54d51669341645906e780e4e2e323, type: 2}
   currentState: 0
+--- !u!114 &-4672483665732326311
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8357079354601086312}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2822e1dd88e8967418b7e320f79e2055, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  basicStats: {fileID: 11400000, guid: 27e54d51669341645906e780e4e2e323, type: 2}
+  currentTarget: {fileID: 0}
 --- !u!114 &413372948441439669
 MonoBehaviour:
   m_ObjectHideFlags: 0
