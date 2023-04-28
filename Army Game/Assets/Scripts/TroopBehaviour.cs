@@ -10,6 +10,8 @@ public class TroopBehaviour : MonoBehaviour
     public TroopStats troopStats;
     TargetFinder targetFinder;
 
+    [SerializeField] float rotationSpeed;
+
     CurrentState currentState;
     enum CurrentState
     {
@@ -41,7 +43,6 @@ public class TroopBehaviour : MonoBehaviour
             currentState = CurrentState.SEARCHING;
             return;
         }
-
 
         float distFromTarget = Vector2.Distance(targetFinder.currentTarget.transform.position, gameObject.transform.position);
 
@@ -86,8 +87,22 @@ public class TroopBehaviour : MonoBehaviour
     {
         Vector2 targetDir = (targetFinder.currentTarget.transform.position - transform.position).normalized;
         rb.MovePosition((Vector2)transform.position + targetDir * troopStats.MoveSpeed);
+
+        RotateToDirection(targetDir);
     }
 
+    //could rotate towards velocity instead, making it independant of target
+    void RotateToDirection(Vector2 direction)
+    {
+        float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+        Quaternion rotation = Quaternion.AngleAxis(angle, transform.forward);
+        transform.rotation = Quaternion.Slerp(transform.rotation, rotation, rotationSpeed * Time.deltaTime);
+    }
+
+    void AvoidWalls()
+    {
+        RaycastHit2D rayHit = Physics2D.Raycast(transform.position, transform.right);
+    }
     
     IEnumerator AttackTarget()
     {
