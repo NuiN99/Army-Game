@@ -136,6 +136,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   troopStats: {fileID: 11400000, guid: 27e54d51669341645906e780e4e2e323, type: 2}
   rotationSpeed: 25
+  allyTroopMask:
+    serializedVersion: 2
+    m_Bits: 64
 --- !u!114 &-4672483665732326311
 MonoBehaviour:
   m_ObjectHideFlags: 0

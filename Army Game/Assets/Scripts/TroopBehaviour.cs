@@ -11,6 +11,7 @@ public class TroopBehaviour : MonoBehaviour
     TargetFinder targetFinder;
 
     [SerializeField] float rotationSpeed;
+    [SerializeField] LayerMask allyTroopMask;
 
     CurrentState currentState;
     enum CurrentState
@@ -89,6 +90,7 @@ public class TroopBehaviour : MonoBehaviour
         rb.MovePosition((Vector2)transform.position + targetDir * troopStats.MoveSpeed);
 
         RotateToDirection(targetDir);
+        AvoidWalls();
     }
 
     //could rotate towards velocity instead, making it independant of target
@@ -101,8 +103,10 @@ public class TroopBehaviour : MonoBehaviour
 
     void AvoidWalls()
     {
-        RaycastHit2D rayHit = Physics2D.Raycast(transform.position, transform.right);
+        RaycastHit2D rayHit = Physics2D.Raycast(transform.position, transform.right, 2.5f, allyTroopMask);
+        Debug.DrawRay(transform.position, transform.right, Color.yellow);
     }
+
     
     IEnumerator AttackTarget()
     {
