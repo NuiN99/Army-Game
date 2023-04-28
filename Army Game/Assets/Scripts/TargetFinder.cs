@@ -6,10 +6,13 @@ using UnityEngine;
 
 public class TargetFinder : MonoBehaviour
 {
-    public BasicStats basicStats;
+    TroopBehaviour statsGetter;
     [NonSerialized] public Transform currentTarget;
     void Start()
     {
+        TryGetComponent(out statsGetter);
+
+        if (statsGetter == null) return;
         StartCoroutine(FindNearestTarget());
     }
 
@@ -18,9 +21,9 @@ public class TargetFinder : MonoBehaviour
     {
         while (true)
         {
-            yield return new WaitForSeconds(basicStats.SearchInterval);
+            yield return new WaitForSeconds(statsGetter.troopStats.SearchInterval);
 
-            RaycastHit2D[] targetFinder = Physics2D.CircleCastAll(transform.position, basicStats.SearchRange, Vector3.zero, 0, basicStats.searchMask);
+            RaycastHit2D[] targetFinder = Physics2D.CircleCastAll(transform.position, statsGetter.troopStats.SearchRange, Vector3.zero, 0, statsGetter.troopStats.searchMask);
             float closestTargetDist = 999;
             foreach (RaycastHit2D target in targetFinder)
             {

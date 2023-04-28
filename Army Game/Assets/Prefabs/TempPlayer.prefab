@@ -49,7 +49,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 57261bab21dd6fb489377b3a463ab423, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  stats: {fileID: 11400000, guid: 27e54d51669341645906e780e4e2e323, type: 2}
+  troopStats: {fileID: 11400000, guid: 27e54d51669341645906e780e4e2e323, type: 2}
 --- !u!114 &-4672483665732326311
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -62,7 +62,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2822e1dd88e8967418b7e320f79e2055, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  basicStats: {fileID: 11400000, guid: 27e54d51669341645906e780e4e2e323, type: 2}
 --- !u!114 &413372948441439669
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -76,7 +75,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHealth: 10000
-  currentHealth: 0
 --- !u!50 &8357079354601086307
 Rigidbody2D:
   serializedVersion: 4

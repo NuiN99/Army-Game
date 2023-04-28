@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "BasicStats", menuName = "ScriptableObjects/NewEnemyStats")]
-public class BasicStats : ScriptableObject
+public class TroopStats : ScriptableObject
 {
     public LayerMask searchMask;
 

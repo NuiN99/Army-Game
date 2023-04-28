@@ -4,10 +4,10 @@ using System.Collections.Generic;
 using UnityEditorInternal;
 using UnityEngine;
 
-public class BasicTroop : MonoBehaviour
+public class TroopBehaviour : MonoBehaviour
 {
     Rigidbody2D rb;
-    public BasicStats stats;
+    public TroopStats troopStats;
     TargetFinder targetFinder;
 
    
@@ -44,15 +44,15 @@ public class BasicTroop : MonoBehaviour
 
         float distFromTarget = Vector2.Distance(targetFinder.currentTarget.transform.position, gameObject.transform.position);
 
-        if (distFromTarget < stats.AtkRange)
+        if (distFromTarget < troopStats.AtkRange)
         {
             currentState = CurrentState.ATTACKING;
         }
-        else if (distFromTarget > stats.AtkRange)
+        else if (distFromTarget > troopStats.AtkRange)
         {
             currentState = CurrentState.GOING;
         }
-        else if (distFromTarget > stats.DeAggroRange)
+        else if (distFromTarget > troopStats.DeAggroRange)
         {
             currentState = CurrentState.SEARCHING;
         }
@@ -64,16 +64,15 @@ public class BasicTroop : MonoBehaviour
     {
         switch (currentState)
         {
+            case CurrentState.WAITING:
+                break;
+            case CurrentState.SEARCHING:
+                break;
+
             case CurrentState.GOING:
                 GoToTarget();
                 break;
 
-            case CurrentState.SEARCHING:
-
-                break;
-            case CurrentState.WAITING:
-
-                break;
             case CurrentState.ATTACKING:
                 if (isAttacking) return;
                 StartCoroutine(AttackTarget());
@@ -85,18 +84,18 @@ public class BasicTroop : MonoBehaviour
     void GoToTarget()
     {
         Vector2 targetDir = (targetFinder.currentTarget.transform.position - transform.position).normalized;
-        rb.MovePosition((Vector2)transform.position + targetDir * stats.MoveSpeed);
+        rb.MovePosition((Vector2)transform.position + targetDir * troopStats.MoveSpeed);
     }
 
     
     IEnumerator AttackTarget()
     {
         isAttacking = true;
-        yield return new WaitForSeconds(stats.AtkSpeed);
+        yield return new WaitForSeconds(troopStats.AtkSpeed);
 
         if (targetFinder.currentTarget != null && targetFinder.currentTarget.TryGetComponent<Health>(out var health))
         {
-            health.TakeDamage(stats.AtkDamage);
+            health.TakeDamage(troopStats.AtkDamage);
             print("HIT");   
         }
         isAttacking = false;
