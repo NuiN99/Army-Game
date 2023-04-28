@@ -30,6 +30,8 @@ public class TroopBehaviour : MonoBehaviour
     private void FixedUpdate()
     {
         UpdateState();
+
+        rb.velocity = Vector3.zero;
     }
 
     void UpdateState()
