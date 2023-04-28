@@ -10,7 +10,6 @@ public class TroopBehaviour : MonoBehaviour
     public TroopStats troopStats;
     TargetFinder targetFinder;
 
-   
     CurrentState currentState;
     enum CurrentState
     {

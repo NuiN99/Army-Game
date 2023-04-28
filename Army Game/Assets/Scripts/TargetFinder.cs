@@ -16,7 +16,7 @@ public class TargetFinder : MonoBehaviour
         StartCoroutine(FindNearestTarget());
     }
 
-    //circle cast every searchInterval, get closest enemy in cast, then change state
+    //circle cast every searchInterval, get closest enemy in cast and send that to troop script
     public IEnumerator FindNearestTarget()
     {
         while (true)
