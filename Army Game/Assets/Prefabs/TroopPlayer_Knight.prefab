@@ -16,8 +16,8 @@ GameObject:
   - component: {fileID: 8357079354601086309}
   - component: {fileID: 8357079354601086311}
   m_Layer: 6
-  m_Name: TempPlayer
-  m_TagString: Player
+  m_Name: TroopPlayer_Knight
+  m_TagString: TroopPlayer
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
