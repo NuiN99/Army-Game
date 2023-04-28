@@ -15,7 +15,7 @@ MonoBehaviour:
   searchMask:
     serializedVersion: 2
     m_Bits: 128
-  baseSearchRange: 10
+  baseSearchRange: 7.5
   baseSearchInterval: 0.1
   baseDeAggroRange: 20
   baseHealth: 100
