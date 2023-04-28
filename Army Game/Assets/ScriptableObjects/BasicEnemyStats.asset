@@ -20,6 +20,6 @@ MonoBehaviour:
   baseDeAggroRange: 20
   baseHealth: 100
   baseAtkDamage: 10
-  baseAtkSpeed: 0.25
+  baseAtkSpeed: 1
   baseAtkRange: 0.5
   baseMoveSpeed: 0.05

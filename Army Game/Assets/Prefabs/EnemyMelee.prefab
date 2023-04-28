@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3082638233112427352}
-  - component: {fileID: 8247920829231202882}
+  - component: {fileID: 2576641091971455418}
   - component: {fileID: 2018370112425291136}
   - component: {fileID: 3082638233112427353}
   - component: {fileID: 372702828260738872}
@@ -37,7 +37,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &8247920829231202882
+--- !u!114 &2576641091971455418
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -46,11 +46,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 3082638233112427356}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 897e972eed790064185efaf656a1916e, type: 3}
+  m_Script: {fileID: 11500000, guid: 57261bab21dd6fb489377b3a463ab423, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemyStats: {fileID: 11400000, guid: b734376b848e1fe48b62575108ee4d28, type: 2}
-  currentState: 0
+  stats: {fileID: 11400000, guid: b734376b848e1fe48b62575108ee4d28, type: 2}
 --- !u!114 &2018370112425291136
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -64,7 +63,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   basicStats: {fileID: 11400000, guid: b734376b848e1fe48b62575108ee4d28, type: 2}
-  currentTarget: {fileID: 0}
 --- !u!114 &3082638233112427353
 MonoBehaviour:
   m_ObjectHideFlags: 0

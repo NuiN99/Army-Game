@@ -19,7 +19,7 @@ MonoBehaviour:
   baseSearchInterval: 0.1
   baseDeAggroRange: 20
   baseHealth: 100
-  baseAtkDamage: 10
-  baseAtkSpeed: 0.25
+  baseAtkDamage: 200
+  baseAtkSpeed: 0.1
   baseAtkRange: 0.5
   baseMoveSpeed: 0.05

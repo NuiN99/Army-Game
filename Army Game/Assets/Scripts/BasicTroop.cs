@@ -7,10 +7,11 @@ using UnityEngine;
 public class BasicTroop : MonoBehaviour
 {
     Rigidbody2D rb;
-    public BasicStats troopStats;
+    public BasicStats stats;
     TargetFinder targetFinder;
 
-    bool isAttacking = false;
+   
+    CurrentState currentState;
     enum CurrentState
     {
         WAITING,
@@ -18,7 +19,8 @@ public class BasicTroop : MonoBehaviour
         GOING,
         ATTACKING
     }
-    [SerializeField] CurrentState currentState;
+
+    bool isAttacking = false;
 
     void Start()
     {
@@ -29,14 +31,33 @@ public class BasicTroop : MonoBehaviour
     private void FixedUpdate()
     {
         UpdateState();
-        ActOnState();
-        rb.velocity = Vector3.zero;
     }
 
-    void GoToTarget()
+    void UpdateState()
     {
-        Vector2 targetDir = (targetFinder.currentTarget.transform.position - transform.position).normalized;
-        rb.MovePosition((Vector2)transform.position + targetDir * troopStats.MoveSpeed);
+        if (targetFinder.currentTarget == null)
+        {
+            currentState = CurrentState.SEARCHING;
+            return;
+        }
+
+
+        float distFromTarget = Vector2.Distance(targetFinder.currentTarget.transform.position, gameObject.transform.position);
+
+        if (distFromTarget < stats.AtkRange)
+        {
+            currentState = CurrentState.ATTACKING;
+        }
+        else if (distFromTarget > stats.AtkRange)
+        {
+            currentState = CurrentState.GOING;
+        }
+        else if (distFromTarget > stats.DeAggroRange)
+        {
+            currentState = CurrentState.SEARCHING;
+        }
+
+        ActOnState();
     }
 
     void ActOnState()
@@ -53,45 +74,31 @@ public class BasicTroop : MonoBehaviour
             case CurrentState.WAITING:
 
                 break;
-        }
-    }
-
-    void UpdateState()
-    {
-        if (targetFinder.currentTarget != null)
-        {
-            float distFromTarget = Vector2.Distance(targetFinder.currentTarget.transform.position, gameObject.transform.position);
-            if (distFromTarget < troopStats.AtkRange && !isAttacking)
-            {
-                currentState = CurrentState.ATTACKING;
+            case CurrentState.ATTACKING:
+                if (isAttacking) return;
                 StartCoroutine(AttackTarget());
-            }
-            else if (distFromTarget > troopStats.AtkRange)
-            {
-                currentState = CurrentState.GOING;
-            }
-            else if (distFromTarget > troopStats.DeAggroRange)
-            {
-                currentState = CurrentState.SEARCHING;
-            }
-        }
-        else
-        {
-            currentState = CurrentState.SEARCHING;
+                break;
         }
     }
 
-    //circle cast every searchInterval, get closest enemy in cast, then change state
 
+    void GoToTarget()
+    {
+        Vector2 targetDir = (targetFinder.currentTarget.transform.position - transform.position).normalized;
+        rb.MovePosition((Vector2)transform.position + targetDir * stats.MoveSpeed);
+    }
+
+    
     IEnumerator AttackTarget()
     {
         isAttacking = true;
-        if (targetFinder.currentTarget.TryGetComponent<Health>(out var health))
+        yield return new WaitForSeconds(stats.AtkSpeed);
+
+        if (targetFinder.currentTarget != null && targetFinder.currentTarget.TryGetComponent<Health>(out var health))
         {
-            health.TakeDamage(troopStats.AtkDamage);
+            health.TakeDamage(stats.AtkDamage);
             print("HIT");   
         }
-        yield return new WaitForSeconds(troopStats.AtkSpeed);
         isAttacking = false;
     }
 }
